@@ -1,23 +1,14 @@
-# WanderList 2026 — Personal Trip Planner
+# Interactive Travel Dashboard
 
-Beginner-friendly mini project built with **HTML, CSS, and Vanilla JavaScript** to demonstrate CRUD operations and UI state management.
+A lightweight, responsive web dashboard for exploring travel destinations and comparing packages.
 
-## MVP Features
+## Features
 
-- **Create**: Add a new trip with destination, date, budget, and category.
-- **Read**: View all planned trips as cards.
-- **Update**: Toggle each trip as visited/unvisited.
-- **Delete**: Remove trips instantly.
-
-## Extra Features
-
-- Search trips by destination name.
-- Stats widget for total trips vs completed trips.
-- Budget validation with inline error messages.
-- Empty-state message when no trips are available.
-- Total planned budget tracker in INR (₹).
-- `localStorage` persistence across page refreshes.
-- Seed destinations for a faster demo (Goa, Manali, Jaipur, Kerala).
+- Destination cards with images, pricing, duration, and rating
+- Package comparison table for quick side-by-side review
+- Interactive trip-planner prompt with recommendation feedback
+- Booking action feedback with card highlighting
+- Special offers button to surface lower-price options
 
 ## Run locally
 
