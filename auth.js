@@ -5,17 +5,6 @@ const registerForm = document.getElementById('register-form');
 const loginForm = document.getElementById('login-form');
 const errorText = document.getElementById('auth-error');
 
-function getSession() {
-  const raw = localStorage.getItem(SESSION_KEY);
-  if (!raw) return null;
-
-  try {
-    return JSON.parse(raw);
-  } catch {
-    return null;
-  }
-}
-
 function getUsers() {
   const raw = localStorage.getItem(USERS_KEY);
   if (!raw) return [];
@@ -38,11 +27,6 @@ function setSession(user) {
 
 function setError(message = '') {
   if (errorText) errorText.textContent = message;
-}
-
-const currentSession = getSession();
-if (currentSession) {
-  window.location.href = 'dashboard.html';
 }
 
 if (registerForm) {
