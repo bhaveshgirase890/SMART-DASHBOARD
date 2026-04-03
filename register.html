@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - WanderList 2026</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="home-page auth-page">
+    <header class="home-topbar">
+      <div class="brand">WanderList 2026</div>
+      <div class="top-actions">
+        <span>INR</span>
+        <a href="register.html" class="top-btn">Register</a>
+        <a href="login.html" class="top-btn top-btn-outline">Sign in</a>
+      </div>
+    </header>
+    <nav class="home-nav">
+      <a href="index.html">Home</a>
+      <a href="#">Stays</a>
+      <a href="#">Flights</a>
+      <a href="#">Packages</a>
+      <a href="#">Attractions</a>
+    </nav>
+    <main class="auth-layout">
+      <section class="auth-hero">
+        <p class="eyebrow">WanderList 2026</p>
+        <h1>Create your traveler account</h1>
+        <p>Register once and continue planning, tracking, and managing your trips seamlessly.</p>
+      </section>
+      <section class="auth-card">
+      <h2>Create Account</h2>
+      <p class="muted">Register to access your personal trip dashboard.</p>
+      <form id="register-form" class="auth-form" novalidate>
+        <label for="name">Full Name</label>
+        <input id="name" name="name" required />
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" minlength="6" required />
+
+        <label for="confirm-password">Confirm Password</label>
+        <input id="confirm-password" name="confirmPassword" type="password" minlength="6" required />
+
+        <p id="auth-error" class="error-message" aria-live="polite"></p>
+        <button class="btn-add" type="submit">Register</button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="login.html">Login</a></p>
+      </section>
+    </main>
+
+    <script src="auth.js"></script>
+  </body>
+</html>
