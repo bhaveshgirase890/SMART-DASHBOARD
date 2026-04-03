@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WanderList 2026 - Personal Trip Planner</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Personal Trip Planner</p>
+        <h1>WanderList 2026</h1>
+      </div>
+      <div class="header-tools">
+        <label class="search-group" for="search-input">
+          <span>Search Trips</span>
+          <input id="search-input" type="search" placeholder="Search by destination..." />
+        </label>
+        <div class="stats" aria-live="polite">
+          <p><strong id="total-trips">0</strong> Total Trips</p>
+          <p><strong id="visited-trips">0</strong> Completed</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <section class="panel form-panel">
+        <h2>Add New Trip</h2>
+        <form id="trip-form" novalidate>
+          <label for="destination">Destination Name</label>
+          <input
+            id="destination"
+            name="destination"
+            type="text"
+            list="popular-destinations"
+            placeholder="e.g., Goa, Manali, Jaipur"
+            required
+          />
+          <datalist id="popular-destinations">
+            <option value="Goa"></option>
+            <option value="Manali"></option>
+            <option value="Jaipur"></option>
+            <option value="Udaipur"></option>
+            <option value="Kerala"></option>
+            <option value="Rishikesh"></option>
+            <option value="Leh-Ladakh"></option>
+            <option value="Darjeeling"></option>
+            <option value="Andaman Islands"></option>
+          </datalist>
+
+          <label for="date">Date</label>
+          <input id="date" name="date" type="date" required />
+
+          <label for="budget">Estimated Budget (INR)</label>
+          <input id="budget" name="budget" type="number" min="1" step="1" required />
+
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            <option value="">Select a category</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Relax">Relax</option>
+            <option value="Work">Work</option>
+            <option value="Culture">Culture</option>
+          </select>
+
+          <p id="form-error" class="error-message" aria-live="polite"></p>
+          <button class="btn-add" type="submit">Add to Itinerary</button>
+        </form>
+      </section>
+
+      <section class="panel list-panel">
+        <div class="list-header">
+          <h2>Planned Trips</h2>
+          <p class="hint">Toggle visited or delete entries anytime.</p>
+        </div>
+        <div id="empty-state" class="empty-state" hidden>
+          No trips planned yet! Start by adding one above.
+        </div>
+        <div id="trip-grid" class="trip-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer class="budget-summary" aria-live="polite">
+      Total Planned Budget: <strong id="budget-total">$0</strong>
+    </footer>
+
+    <template id="trip-card-template">
+      <article class="trip-card">
+        <header>
+          <h3 class="trip-destination"></h3>
+          <p class="trip-date"></p>
+        </header>
+        <div class="trip-meta">
+          <p><span>Budget:</span> <strong class="trip-budget"></strong></p>
+          <p><span>Category:</span> <strong class="trip-category"></strong></p>
+        </div>
+        <footer>
+          <label class="visited-toggle">
+            <input type="checkbox" class="visited-input" />
+            Mark as Visited
+          </label>
+          <button class="delete-btn" type="button" aria-label="Delete trip">🗑</button>
+        </footer>
+      </article>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
