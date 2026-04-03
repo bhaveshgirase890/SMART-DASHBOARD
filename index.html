@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WanderList 2026 - Register</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="auth-page">
+    <main class="auth-layout">
+      <section class="auth-hero">
+        <p class="eyebrow">Welcome to WanderList 2026</p>
+        <h1>Plan Smart. Travel Better.</h1>
+        <p>
+          Build your itinerary with INR (₹) budgets, track visited places, and keep your booking
+          history organized in one clean dashboard.
+        </p>
+        <ul>
+          <li>Track trips and budgets in rupees</li>
+          <li>Save data locally in your browser</li>
+          <li>Review past bookings instantly</li>
+        </ul>
+      </section>
+
+      <section class="auth-card">
+        <p class="eyebrow">Get Started</p>
+        <h2>Create Account</h2>
+        <p class="muted">Register first, then you will be redirected to your dashboard.</p>
+        <form id="register-form" class="auth-form" novalidate>
+        <label for="name">Full Name</label>
+        <input id="name" name="name" required />
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" minlength="6" required />
+
+        <label for="confirm-password">Confirm Password</label>
+        <input id="confirm-password" name="confirmPassword" type="password" minlength="6" required />
+
+        <p id="auth-error" class="error-message" aria-live="polite"></p>
+        <button class="btn-add" type="submit">Register & Continue</button>
+      </form>
+        <p class="auth-switch">Already have an account? <a href="login.html">Login</a></p>
+      </section>
+    </main>
+
+    <script src="auth.js"></script>
+  </body>
+</html>
