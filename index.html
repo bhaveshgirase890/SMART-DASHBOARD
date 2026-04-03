@@ -3,49 +3,93 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WanderList 2026 - Register</title>
+    <title>Interactive Travel Dashboard</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="auth-page">
-    <main class="auth-layout">
-      <section class="auth-hero">
-        <p class="eyebrow">Welcome to WanderList 2026</p>
-        <h1>Plan Smart. Travel Better.</h1>
+  <body>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Interactive Travel Dashboard</p>
+        <h1>Explore destinations and book your next trip</h1>
         <p>
-          Build your itinerary with INR (₹) budgets, track visited places, and keep your booking
-          history organized in one clean dashboard.
+          Compare featured destinations, inspect package details, and receive instant
+          feedback when you select deals, check offers, or book an itinerary.
         </p>
-        <ul>
-          <li>Track trips and budgets in rupees</li>
-          <li>Save data locally in your browser</li>
-          <li>Review past bookings instantly</li>
-        </ul>
+      </div>
+      <button id="refresh-offers" class="btn btn-outline">Check Special Offers</button>
+    </header>
+
+    <main class="layout">
+      <section>
+        <h2>Featured Destinations</h2>
+        <p class="section-copy">
+          Browse curated destination cards and choose a package that matches your travel style.
+        </p>
+        <div id="destination-grid" class="card-grid" aria-live="polite"></div>
       </section>
 
-      <section class="auth-card">
-        <p class="eyebrow">Get Started</p>
-        <h2>Create Account</h2>
-        <p class="muted">Register first, then you will be redirected to your dashboard.</p>
-        <form id="register-form" class="auth-form" novalidate>
-        <label for="name">Full Name</label>
-        <input id="name" name="name" required />
+      <section class="panel">
+        <h2>Package Comparison</h2>
+        <p class="section-copy">Review key package details in one place before booking.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Destination</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Rating</th>
+                <th>Availability</th>
+              </tr>
+            </thead>
+            <tbody id="package-table-body"></tbody>
+          </table>
+        </div>
+      </section>
 
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required />
-
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" minlength="6" required />
-
-        <label for="confirm-password">Confirm Password</label>
-        <input id="confirm-password" name="confirmPassword" type="password" minlength="6" required />
-
-        <p id="auth-error" class="error-message" aria-live="polite"></p>
-        <button class="btn-add" type="submit">Register & Continue</button>
-      </form>
-        <p class="auth-switch">Already have an account? <a href="login.html">Login</a></p>
+      <section class="panel split">
+        <div>
+          <h2>Trip Planner Prompt</h2>
+          <p class="section-copy">
+            Tell us what you're looking for and we'll highlight a suitable destination.
+          </p>
+          <form id="prompt-form" class="prompt-form">
+            <label for="travel-mood">What kind of trip do you want?</label>
+            <select id="travel-mood" required>
+              <option value="">Select an option</option>
+              <option value="beach">Relaxing beach escape</option>
+              <option value="city">City exploration</option>
+              <option value="nature">Nature and adventure</option>
+              <option value="culture">Cultural immersion</option>
+            </select>
+            <button type="submit" class="btn">Recommend Destination</button>
+          </form>
+        </div>
+        <aside id="feedback" class="feedback" aria-live="polite">
+          <h3>Live Feedback</h3>
+          <p>Actions and recommendations will appear here.</p>
+        </aside>
       </section>
     </main>
 
-    <script src="auth.js"></script>
+    <template id="destination-template">
+      <article class="card">
+        <img alt="" loading="lazy" />
+        <div class="card-content">
+          <h3></h3>
+          <p class="card-description"></p>
+          <div class="meta-row">
+            <span class="pill duration"></span>
+            <span class="pill rating"></span>
+          </div>
+          <div class="price-row">
+            <strong class="price"></strong>
+            <button class="btn book-btn" type="button">Book</button>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script src="script.js"></script>
   </body>
 </html>
