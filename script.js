@@ -1,179 +1,157 @@
-const STORAGE_KEY = 'wanderlist_trips_v1';
+const destinations = [
+  {
+    id: 'bali',
+    name: 'Bali, Indonesia',
+    mood: 'beach',
+    description: 'Tropical beaches, wellness retreats, and vibrant sunsets.',
+    duration: '6 days',
+    price: 1399,
+    rating: 4.8,
+    availability: 'Limited spots',
+    image:
+      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'barcelona',
+    name: 'Barcelona, Spain',
+    mood: 'city',
+    description: 'Architecture, nightlife, and Mediterranean city culture.',
+    duration: '5 days',
+    price: 1240,
+    rating: 4.6,
+    availability: 'Open',
+    image:
+      'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'banff',
+    name: 'Banff, Canada',
+    mood: 'nature',
+    description: 'Mountain trails, glacier lakes, and outdoor adventure.',
+    duration: '7 days',
+    price: 1510,
+    rating: 4.9,
+    availability: 'Selling fast',
+    image:
+      'https://images.unsplash.com/photo-1616628182509-6f6f5be98b9f?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: 'kyoto',
+    name: 'Kyoto, Japan',
+    mood: 'culture',
+    description: 'Historic temples, tea districts, and seasonal beauty.',
+    duration: '6 days',
+    price: 1675,
+    rating: 4.9,
+    availability: 'Open',
+    image:
+      'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1200&q=80',
+  },
+];
 
-const tripForm = document.getElementById('trip-form');
-const destinationInput = document.getElementById('destination');
-const dateInput = document.getElementById('date');
-const budgetInput = document.getElementById('budget');
-const categoryInput = document.getElementById('category');
-const searchInput = document.getElementById('search-input');
-const formError = document.getElementById('form-error');
-const tripGrid = document.getElementById('trip-grid');
-const emptyState = document.getElementById('empty-state');
-const totalTrips = document.getElementById('total-trips');
-const visitedTrips = document.getElementById('visited-trips');
-const budgetTotal = document.getElementById('budget-total');
-const cardTemplate = document.getElementById('trip-card-template');
+const grid = document.getElementById('destination-grid');
+const tableBody = document.getElementById('package-table-body');
+const feedback = document.getElementById('feedback');
+const promptForm = document.getElementById('prompt-form');
+const moodSelect = document.getElementById('travel-mood');
+const refreshOffersBtn = document.getElementById('refresh-offers');
+const template = document.getElementById('destination-template');
 
-let trips = loadTrips();
-
-function loadTrips() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return [];
-
-  try {
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+function setFeedback(title, message, isSuccess = false) {
+  feedback.innerHTML = `
+    <h3>${title}</h3>
+    <p class="${isSuccess ? 'success' : ''}">${message}</p>
+  `;
 }
 
-function saveTrips() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(trips));
-}
-
-function formatBudget(amount) {
+function formatPrice(price) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     maximumFractionDigits: 0,
-  }).format(amount);
+  }).format(price);
 }
 
-function formatDate(dateValue) {
-  const date = new Date(`${dateValue}T00:00:00`);
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }).format(date);
+function clearHighlights() {
+  document.querySelectorAll('.card').forEach((card) => card.classList.remove('highlight'));
 }
 
-function setError(message = '') {
-  formError.textContent = message;
-}
+function renderCards() {
+  destinations.forEach((destination) => {
+    const node = template.content.cloneNode(true);
+    const card = node.querySelector('.card');
+    card.dataset.id = destination.id;
 
-function validateForm(data) {
-  if (!data.destination || !data.date || !data.category || !data.budgetRaw) {
-    return 'Please fill in all fields before adding a trip.';
-  }
+    const image = node.querySelector('img');
+    image.src = destination.image;
+    image.alt = `${destination.name} destination photo`;
 
-  if (Number.isNaN(data.budget) || data.budget <= 0) {
-    return 'Budget must be a positive number.';
-  }
+    node.querySelector('h3').textContent = destination.name;
+    node.querySelector('.card-description').textContent = destination.description;
+    node.querySelector('.duration').textContent = destination.duration;
+    node.querySelector('.rating').textContent = `★ ${destination.rating}`;
+    node.querySelector('.price').textContent = formatPrice(destination.price);
 
-  return '';
-}
+    const bookBtn = node.querySelector('.book-btn');
+    bookBtn.addEventListener('click', () => {
+      clearHighlights();
+      card.classList.add('highlight');
+      setFeedback(
+        'Booking Confirmed',
+        `You selected the ${destination.name} package for ${formatPrice(destination.price)}.`,
+        true
+      );
+    });
 
-function getFilteredTrips() {
-  const query = searchInput.value.trim().toLowerCase();
-  if (!query) return trips;
-  return trips.filter((trip) => trip.destination.toLowerCase().includes(query));
-}
-
-function updateSummary() {
-  const total = trips.length;
-  const completed = trips.filter((trip) => trip.visited).length;
-  const budgetSum = trips.reduce((sum, trip) => sum + trip.budget, 0);
-
-  totalTrips.textContent = String(total);
-  visitedTrips.textContent = String(completed);
-  budgetTotal.textContent = formatBudget(budgetSum);
-}
-
-function toggleEmptyState(filteredCount) {
-  emptyState.hidden = filteredCount !== 0;
-}
-
-function handleToggleVisited(id) {
-  trips = trips.map((trip) =>
-    trip.id === id
-      ? {
-          ...trip,
-          visited: !trip.visited,
-        }
-      : trip
-  );
-
-  saveTrips();
-  render();
-}
-
-function handleDelete(id) {
-  trips = trips.filter((trip) => trip.id !== id);
-  saveTrips();
-  render();
-}
-
-function createTripCard(trip) {
-  const node = cardTemplate.content.cloneNode(true);
-  const card = node.querySelector('.trip-card');
-  card.dataset.id = trip.id;
-
-  if (trip.visited) {
-    card.classList.add('visited');
-  }
-
-  node.querySelector('.trip-destination').textContent = trip.destination;
-  node.querySelector('.trip-date').textContent = formatDate(trip.date);
-  node.querySelector('.trip-budget').textContent = formatBudget(trip.budget);
-  node.querySelector('.trip-category').textContent = trip.category;
-
-  const visitedInput = node.querySelector('.visited-input');
-  visitedInput.checked = trip.visited;
-  visitedInput.addEventListener('change', () => handleToggleVisited(trip.id));
-
-  const deleteButton = node.querySelector('.delete-btn');
-  deleteButton.addEventListener('click', () => handleDelete(trip.id));
-
-  return node;
-}
-
-function render() {
-  const filteredTrips = getFilteredTrips();
-  tripGrid.innerHTML = '';
-
-  filteredTrips.forEach((trip) => {
-    tripGrid.appendChild(createTripCard(trip));
+    grid.appendChild(node);
   });
-
-  toggleEmptyState(filteredTrips.length);
-  updateSummary();
 }
 
-tripForm.addEventListener('submit', (event) => {
-  event.preventDefault();
+function renderTable() {
+  tableBody.innerHTML = destinations
+    .map(
+      (destination) => `
+      <tr>
+        <td>${destination.name}</td>
+        <td>${destination.duration}</td>
+        <td>${formatPrice(destination.price)}</td>
+        <td>${destination.rating}</td>
+        <td>${destination.availability}</td>
+      </tr>
+    `
+    )
+    .join('');
+}
 
-  const tripData = {
-    destination: destinationInput.value.trim(),
-    date: dateInput.value,
-    budgetRaw: budgetInput.value,
-    budget: Number(budgetInput.value),
-    category: categoryInput.value,
-  };
-
-  const validationError = validateForm(tripData);
-  if (validationError) {
-    setError(validationError);
+function recommendDestination(mood) {
+  const result = destinations.find((destination) => destination.mood === mood);
+  if (!result) {
+    setFeedback('No Match Found', 'Try a different travel style to see a recommendation.');
     return;
   }
 
-  const newTrip = {
-    id: crypto.randomUUID(),
-    destination: tripData.destination,
-    date: tripData.date,
-    budget: tripData.budget,
-    category: tripData.category,
-    visited: false,
-  };
+  clearHighlights();
+  const matchedCard = document.querySelector(`[data-id="${result.id}"]`);
+  matchedCard?.classList.add('highlight');
+  setFeedback(
+    'Recommended Destination',
+    `${result.name} is a great match. Package starts at ${formatPrice(result.price)} for ${result.duration}.`
+  );
+}
 
-  trips = [newTrip, ...trips];
-  saveTrips();
-  tripForm.reset();
-  setError();
-  render();
+promptForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  recommendDestination(moodSelect.value);
 });
 
-searchInput.addEventListener('input', render);
+refreshOffersBtn.addEventListener('click', () => {
+  const discounted = [...destinations].sort((a, b) => a.price - b.price).slice(0, 2);
+  const offerMessage = discounted
+    .map((destination) => `${destination.name} (${formatPrice(destination.price)})`)
+    .join(' and ');
 
-render();
+  setFeedback('Special Offers', `This week: save more with ${offerMessage}.`);
+});
+
+renderCards();
+renderTable();
