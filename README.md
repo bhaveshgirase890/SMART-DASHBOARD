@@ -1,15 +1,35 @@
-# Interactive Travel Dashboard
+# Smart Waste Monitoring Dashboard (HTML/CSS/JavaScript + Simple Backend)
 
-A lightweight, responsive web dashboard for exploring travel destinations and comparing packages.
+This project now includes a **simple backend** and a short front-end dashboard inspired by your workflow image:
 
-## Features
+1. Data Acquisition & Monitoring
+2. Route Optimization & Collection
+3. Waste Segregation & Transformation
+4. Feedback, Tracking, & Analytics
 
-- Destination cards with images, pricing, duration, and rating
-- Package comparison table for quick side-by-side review
-- Interactive trip-planner prompt with recommendation feedback
-- Booking action feedback with card highlighting
-- Special offers button to surface lower-price options
+## Tech stack
 
-## Run locally
+- Frontend: HTML + CSS + Vanilla JavaScript
+- Backend: Node.js built-in `http` module (no external dependencies)
 
-Open `index.html` in any modern browser.
+## Run
+
+```bash
+node server.js
+```
+
+Open: `http://localhost:3000`
+
+## API endpoints
+
+- `GET /api/dashboard` → live dashboard data
+- `GET /api/feedback` → feedback log list
+- `POST /api/feedback` → add a feedback message
+
+Example POST body:
+
+```json
+{
+  "message": "Bin #21 overflow near school"
+}
+```
